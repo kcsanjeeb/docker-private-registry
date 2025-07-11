@@ -1,0 +1,32 @@
+version: 0.1
+
+log:
+  level: debug
+  formatter: text
+
+storage:
+  s3:
+    accesskey: minioadmin
+    secretkey: minioadmin
+    region: us-east-1
+    regionendpoint: http://172.22.0.2:9000
+    bucket: registry
+    secure: false
+    pathstyle: true
+    chunksize: 5242880
+    rootdirectory: /docker
+
+http:
+  addr: :5000
+  secret: your-random-secret-here
+  debug:
+    addr: :5001
+  tls:
+    certificate: /certs/domain.crt
+    key: /certs/domain.key
+
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3

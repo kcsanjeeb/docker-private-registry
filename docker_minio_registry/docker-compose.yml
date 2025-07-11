@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  registry:
+    image: registry:2
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./registry/certs:/certs
+      - ./registry/config.yml:/etc/docker/registry/config.yml
+    environment:
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/domain.crt
+      REGISTRY_HTTP_TLS_KEY: /certs/domain.key
+    depends_on:
+      - minio
+    networks:
+      - registry-network
+    extra_hosts:
+      - "minio:172.19.0.2"
+
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"  # MinIO console
+    volumes:
+      - ./minio/data:/data
+      - ./minio/config:/root/.minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    networks:
+      registry-network:
+        aliases:
+          - minio
+
+networks:
+  registry-network:
+    driver: bridge

@@ -1,0 +1,18 @@
+version: 0.1
+log:
+  level: debug
+storage:
+  s3:
+    accesskey: minioadmin
+    secretkey: minioadmin
+    region: us-east-1
+    regionendpoint: http://172.19.0.2:9000
+    bucket: registry
+    secure: false
+    v4auth: true
+    chunksize: 5242880
+http:
+  addr: :5000
+  tls:
+    certificate: /certs/domain.crt
+    key: /certs/domain.key
